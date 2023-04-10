@@ -18,23 +18,22 @@
 from guizero import *
 
 from utils import *
-from titanium import *
+
+from tempSensor import *
 
 
 app = App(title = "Temperature Control", bg = "#413F42", width = "480", height = "320")
 
 containerBox = Box(app, align = "top", width = "fill", height = "fill")
+probeStats = Text(containerBox, text="", color = "#ffffff")
 
-if NetworkUp():
-    weatherTemp = asyncio.run(GetWeatherTemp())
-    weatherText = "Local Temp: " + str(weatherTemp) + "c"
-    wt = Text(containerBox, weatherText, color = "#ffffff")
-else :
-    wt = Text(containerBox, "Network Error", color = "#ffffff")
+def readTemp():
+    temp = serialRead()
+    text = "P1: " + str(temp) + "c \nTarget: 30c"
+    probeStats.value = text
 
-SetupGPIO()
-
-
-probeStats = Text(containerBox, text="P1: 35c \nTarget: 30c", color = "#ffffff")
+if serialSetUp():
+    app.repeat(2000, readTemp)
+    
 
 app.display()

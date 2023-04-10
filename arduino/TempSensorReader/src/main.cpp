@@ -1,24 +1,20 @@
 #include "Arduino.h"
+#include <math.h>
 #include "DHT.h"
 
-
-
-#define DHTPIN 7
-
-#define DHTTYPE DHT11
-
-DHT dht(DHTPIN, DHTTYPE);
+int dhtPin = 2;
+DHT dht(dhtPin, DHT11);
 
 void setup()
 {
+  dht.begin();
   Serial.begin(9600);
 }
 
 void loop()
 {
-  Serial.print("Temperature = ");
+
   Serial.println(dht.readTemperature());
-  Serial.print("Humidity = ");
-  Serial.println(dht.readHumidity());
-  delay(1000);
+
+  delay(2000);
 }

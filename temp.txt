@@ -1,0 +1,6 @@
+	if NetworkUp():
+    weatherTemp = asyncio.run(GetWeatherTemp())
+    weatherText = "Local Temp: " + str(weatherTemp) + "c"
+    wt = Text(containerBox, weatherText, color = "#ffffff")
+else :
+    wt = Text(containerBox, "Network Error", color = "#ffffff")
