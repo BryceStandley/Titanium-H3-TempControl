@@ -28,7 +28,7 @@ app = App(title = "Temperature Control", bg = "#413F42")
 app.set_full_screen()
 
 containerBox = Box(app, align = "top", width = "fill", height = "fill")
-probeStats = Text(containerBox, text="", color = "#ffffff")
+probeStats = Text(containerBox, text="", color = "#ffffff", size="24")
 
 def readTemp():
     temp = sensorRead()
@@ -40,7 +40,7 @@ def readTemp():
         setOutput(False)
         outputStatus = 0
         
-    text = "P1: " + str(temp) + "c \nTarget: 30c"
+    text = "P1: " + str(temp) + "c \nTrigger: " +str(triggerTemp) + "C\nOutput: " +str(outputStatus)
     probeStats.value = text
 
 sensorSetup()
