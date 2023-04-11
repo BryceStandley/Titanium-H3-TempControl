@@ -4,20 +4,18 @@ import adafruit_dht
 import psutil
 import RPi.GPIO as GPIO
 
+sensor = adafruit_dht.DHT11(board.D16)
+
 def sensorSetup():
-	# We first check if a libgpiod process is running. If yes, we kill it!
-	for proc in psutil.process_iter():
-		if proc.name() == 'libgpiod_pulsein' or proc.name() == 'libgpiod_pulsei':
-			proc.kill()
-	sensor = adafruit_dht.DHT11(board.D16)
+	GPIO.setup(20, GPIO.OUT)
+	
 
 def sensorRead():
 	temp = sensor.temperature
-	humidity = sensor.humidity
 	return temp
 
 def setOutput(value):
 	if value is True :
-		GPIO.output(board.D20, GPIO.HIGH)
+		GPIO.output(board.D20, 1)
 	else:
-		GPIO.output(board.D20, GPIO.LOW)
+		GPIO.output(board.D20, 0)

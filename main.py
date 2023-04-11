@@ -24,13 +24,15 @@ from tempSensor import *
 triggerTemp = 30
 outputStatus = 0;
 
-app = App(title = "Temperature Control", bg = "#413F42", width = "480", height = "320")
+app = App(title = "Temperature Control", bg = "#413F42")
+app.set_full_screen()
 
 containerBox = Box(app, align = "top", width = "fill", height = "fill")
 probeStats = Text(containerBox, text="", color = "#ffffff")
 
 def readTemp():
     temp = sensorRead()
+    global outputStatus
     if temp >= triggerTemp and outputStatus == 0:
         setOutput(True)
         outputStatus = 1
@@ -41,8 +43,8 @@ def readTemp():
     text = "P1: " + str(temp) + "c \nTarget: 30c"
     probeStats.value = text
 
-if sensorSetup():
-    app.repeat(2000, readTemp)
+sensorSetup()
+app.repeat(500, readTemp)
     
 
 app.display()
