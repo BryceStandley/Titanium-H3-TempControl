@@ -21,6 +21,8 @@ from utils import *
 
 from tempSensor import *
 
+triggerTemp = 30
+outputStatus = 0;
 
 app = App(title = "Temperature Control", bg = "#413F42", width = "480", height = "320")
 
@@ -28,11 +30,18 @@ containerBox = Box(app, align = "top", width = "fill", height = "fill")
 probeStats = Text(containerBox, text="", color = "#ffffff")
 
 def readTemp():
-    temp = serialRead()
+    temp = sensorRead()
+    if temp >= triggerTemp and outputStatus == 0:
+        setOutput(True)
+        outputStatus = 1
+    elif temp < triggerTemp  and outputStatus == 1:
+        setOutput(False)
+        outputStatus = 0
+        
     text = "P1: " + str(temp) + "c \nTarget: 30c"
     probeStats.value = text
 
-if serialSetUp():
+if sensorSetup():
     app.repeat(2000, readTemp)
     
 

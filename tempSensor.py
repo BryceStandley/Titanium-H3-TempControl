@@ -1,24 +1,23 @@
+import time
+import board
+import adafruit_dht
+import psutil
+import RPi.GPIO as GPIO
 
-import serial
+def sensorSetup():
+	# We first check if a libgpiod process is running. If yes, we kill it!
+	for proc in psutil.process_iter():
+		if proc.name() == 'libgpiod_pulsein' or proc.name() == 'libgpiod_pulsei':
+			proc.kill()
+	sensor = adafruit_dht.DHT11(board.D16)
 
-srl = serial.Serial();
+def sensorRead():
+	temp = sensor.temperature
+	humidity = sensor.humidity
+	return temp
 
-def serialSetUp():
-	try:
-		srl.port='COM3'
-		srl.baudrate=9800
-		srl.open()
-		print("Serial port Open")
-		return True
-	except:
-		print("Serial port failed to open")
-		return False
-
-def serialRead():
-	line = srl.readline()
-	val = line.decode()
-	temp = val.strip()
-	f = float(temp)
-	return int(f)
-
-
+def setOutput(value):
+	if value is True :
+		GPIO.output(board.D20, GPIO.HIGH)
+	else:
+		GPIO.output(board.D20, GPIO.LOW)
